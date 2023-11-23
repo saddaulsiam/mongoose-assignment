@@ -2,8 +2,16 @@ import { Schema, model } from 'mongoose';
 import { User } from './user.interface';
 
 const userSchema = new Schema<User>({
-  userId: { type: Number, required: [true, 'UserId is required'] },
-  username: { type: String, required: [true, 'Username is required'] },
+  userId: {
+    type: Number,
+    required: [true, 'UserId is required'],
+    unique: true,
+  },
+  username: {
+    type: String,
+    required: [true, 'Username is required'],
+    unique: true,
+  },
   password: { type: String, required: [true, 'Password is required'] },
   fullName: {
     firstName: { type: String, required: [true, 'FirstName is required'] },
@@ -23,12 +31,9 @@ const userSchema = new Schema<User>({
   },
   orders: [
     {
-      productName: {
-        type: String,
-        required: [true, 'ProductName is required'],
-      },
-      price: { type: Number, required: [true, 'Price is required'] },
-      quantity: { type: Number, required: [true, 'Quantity is required'] },
+      productName: { type: String },
+      price: { type: Number },
+      quantity: { type: Number },
     },
   ],
 });

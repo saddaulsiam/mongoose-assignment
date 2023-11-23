@@ -10,8 +10,15 @@ router
 
 router
   .route('/:userId')
-  .get(UsersControllers.getSingleUser)
+  .get(UsersControllers.getUserById)
   .put(UsersControllers.updateUser)
   .delete(UsersControllers.deleteUser);
+
+router
+  .route('/:userId/orders')
+  .put(UsersControllers.createOrder)
+  .get(UsersControllers.getOrders);
+
+router.get('/:userId/orders/total-price', UsersControllers.getOrderTotalPrice);
 
 export const UserRoutes = router;

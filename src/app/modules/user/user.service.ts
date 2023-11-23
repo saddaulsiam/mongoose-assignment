@@ -17,9 +17,20 @@ const getAllUsers = async () => {
   return users;
 };
 
-const getSingleUsers = async (userId: string) => {
-  const users = await UserModel.findById(userId).select('-password');
+const getUserById = async (userId: string) => {
+  const users = await UserModel.findById({ _id: userId }).select('-password');
   return users;
+};
+
+const updateUser = async (userId: any, userData: User) => {
+  const result = await UserModel.findOneAndUpdate(
+    { _id: userId },
+    {
+      $set: userData,
+    },
+    { new: true },
+  ).select({ password: 0 });
+  return result;
 };
 
 const deleteUser = async (userId: string) => {
@@ -30,6 +41,7 @@ const deleteUser = async (userId: string) => {
 export const UserServices = {
   createUser,
   getAllUsers,
-  getSingleUsers,
+  getUserById,
+  updateUser,
   deleteUser,
 };
