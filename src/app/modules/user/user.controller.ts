@@ -223,19 +223,29 @@ const getOrderTotalPrice = async (req: Request, res: Response) => {
       });
     }
 
-    let totalPrice = 0;
+    if (user.orders) {
+      let totalPrice = 0;
 
-    user.orders.forEach((order) => {
-      totalPrice += order.price * order.quantity;
-    });
+      user.orders.forEach((order) => {
+        totalPrice += order.price * order.quantity;
+      });
 
-    res.status(200).json({
-      success: true,
-      message: 'Total price calculated successfully!',
-      data: {
-        totalPrice,
-      },
-    });
+      res.status(200).json({
+        success: true,
+        message: 'Total price calculated successfully!',
+        data: {
+          totalPrice,
+        },
+      });
+    } else {
+      res.status(200).json({
+        success: true,
+        message: 'User has no orders',
+        data: {
+          totalPrice: 0,
+        },
+      });
+    }
   } catch (err: any) {
     res.status(500).json({
       success: false,
