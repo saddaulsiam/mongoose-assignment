@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Request, Response } from 'express';
 import { UserServices } from './user.service';
 import UserValidationSchema from './user.validation';
@@ -8,6 +9,7 @@ const createUser = async (req: Request, res: Response) => {
 
     const user = await UserServices.createUser(zodParsedData);
 
+    // eslint-disable-next-line
     const { password, ...others } = user.toObject();
 
     res.status(201).json({

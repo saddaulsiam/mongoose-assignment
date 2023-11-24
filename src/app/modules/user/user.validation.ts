@@ -2,8 +2,8 @@ import { z } from 'zod';
 
 const UserValidationSchema = z.object({
   userId: z.number().positive('UserId must be a positive number'),
-  username: z.string(),
-  password: z.string(),
+  username: z.string().min(3, 'username must be 3 characters'),
+  password: z.string().min(6, 'password must be 6 characters'),
   fullName: z.object({
     firstName: z.string(),
     lastName: z.string(),

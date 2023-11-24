@@ -34,7 +34,7 @@ const updateUser = async (userId: string, userData: TUser) => {
 };
 
 const deleteUser = async (userId: string) => {
-  const users = await User.findOneAndDelete({ userId });
+  const users = await User.deleteOne({ userId });
   return users;
 };
 
