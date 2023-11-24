@@ -223,7 +223,7 @@ const getOrderTotalPrice = async (req: Request, res: Response) => {
       });
     }
 
-    if (user.orders) {
+    if (user.orders !== undefined && user.orders.length > 0) {
       let totalPrice = 0;
 
       user.orders.forEach((order) => {
