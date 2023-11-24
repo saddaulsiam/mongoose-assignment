@@ -1,10 +1,10 @@
 import bcrypt from 'bcrypt';
 
 import { Schema, model } from 'mongoose';
-import { User } from './user.interface';
+import { TUser, UserModel } from './user.interface';
 import config from '../../config';
 
-const userSchema = new Schema<User>({
+const userSchema = new Schema<TUser>({
   userId: {
     type: Number,
     required: [true, 'UserId is required'],
@@ -49,4 +49,4 @@ userSchema.pre('save', async function (next) {
   next();
 });
 
-export const UserModel = model<User>('User', userSchema);
+export const User = model<TUser>('User', userSchema);

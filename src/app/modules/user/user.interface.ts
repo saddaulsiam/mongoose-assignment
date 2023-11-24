@@ -1,29 +1,37 @@
-interface FullName {
+import { Model } from 'mongoose';
+
+export type TFullName = {
   firstName: string;
   lastName: string;
-}
+};
 
-interface Address {
+export type TAddress = {
   street: string;
   city: string;
   country: string;
-}
+};
 
-export interface Order {
+export type TOrder = {
   productName: string;
   price: number;
   quantity: number;
-}
+};
 
-export type User = {
+export type TUser = {
   userId: number;
   username: string;
   password: string;
-  fullName: FullName;
+  fullName: TFullName;
   age: number;
   email: string;
   isActive: boolean;
   hobbies: string[];
-  address: Address;
-  orders?: Order[];
+  address: TAddress;
+  orders?: TOrder[];
 };
+
+//for creating static
+
+export interface UserModel extends Model<TUser> {
+  isUserExists(id: string): Promise<TUser | null>;
+}

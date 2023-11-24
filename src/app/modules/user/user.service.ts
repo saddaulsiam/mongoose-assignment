@@ -1,13 +1,13 @@
-import { Order, User } from './user.interface';
-import { UserModel } from './user.model';
+import { TOrder, TUser } from './user.interface';
+import { User } from './user.model';
 
-const createUser = async (data: User) => {
-  const user = await UserModel.create(data);
+const createUser = async (data: TUser) => {
+  const user = await User.create(data);
   return user;
 };
 
 const getAllUsers = async () => {
-  const users = await UserModel.aggregate([]).project({
+  const users = await User.aggregate([]).project({
     username: 1,
     fullName: 1,
     age: 1,
@@ -18,29 +18,29 @@ const getAllUsers = async () => {
 };
 
 const getUserById = async (userId: string) => {
-  const users = await UserModel.findById({ _id: userId }).select('-password');
+  const users = await User.findOne({ userId }).select('-password');
   return users;
 };
 
-const updateUser = async (userId: string, userData: User) => {
-  const result = await UserModel.findOneAndUpdate(
-    { _id: userId },
+const updateUser = async (userId: string, userData: TUser) => {
+  const result = await User.findOneAndUpdate(
+    { userId },
     {
       $set: userData,
     },
-    { new: true },
+    { new: true, runValidators: true },
   ).select({ password: 0 });
   return result;
 };
 
 const deleteUser = async (userId: string) => {
-  const users = await UserModel.findOneAndDelete({ _id: userId });
+  const users = await User.findOneAndDelete({ userId });
   return users;
 };
 
-const createOrder = async (userId: string, orderData: Order) => {
-  const result = await UserModel.findOneAndUpdate(
-    { _id: userId },
+const createOrder = async (userId: string, orderData: TOrder) => {
+  const result = await User.findOneAndUpdate(
+    { userId },
     { $push: { orders: orderData } },
     { upsert: true, new: true },
   );
