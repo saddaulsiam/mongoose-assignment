@@ -12,7 +12,7 @@ app.use(cors());
 app.use('/api/v1/users', UserRoutes);
 
 app.get('/', (req: Request, res: Response) => {
-  res.send('Server is running');
+  res.send(`Server is running 5000`);
 });
 
 export default app;
