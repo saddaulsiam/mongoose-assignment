@@ -15,11 +15,11 @@ const createUser = async (req: Request, res: Response) => {
       message: 'User created successfully!',
       data: others,
     });
-  } catch (error: any) {
-    res.status(400).json({
+  } catch (err: any) {
+    res.status(500).json({
       success: false,
-      message: 'failed creating user',
-      error: error.message,
+      message: err.message || 'something went wrong',
+      error: err,
     });
   }
 };
@@ -89,7 +89,9 @@ const updateUser = async (req: Request, res: Response) => {
       });
     }
 
-    const result = await UserServices.updateUser(userId, req.body);
+    const zodParsedData = UserValidationSchema.parse(req.body);
+
+    const result = await UserServices.updateUser(userId, zodParsedData);
 
     res.status(200).json({
       success: true,
@@ -128,16 +130,22 @@ const deleteUser = async (req: Request, res: Response) => {
 const createOrder = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
+    const orderData = req.body;
 
     const user = await UserServices.getUserById(userId);
 
-    if (user.orders && user.orders.length > 0) {
-      user.orders.push(req.body);
-    } else {
-      user.orders = [req.body];
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found',
+        error: {
+          code: 404,
+          description: 'User not found!',
+        },
+      });
     }
 
-    await user.save();
+    await UserServices.createOrder(userId, orderData);
 
     res.status(200).json({
       success: true,

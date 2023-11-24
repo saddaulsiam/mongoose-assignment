@@ -1,4 +1,4 @@
-import { User } from './user.interface';
+import { Order, User } from './user.interface';
 import { UserModel } from './user.model';
 
 const createUser = async (data: User) => {
@@ -22,7 +22,7 @@ const getUserById = async (userId: string) => {
   return users;
 };
 
-const updateUser = async (userId: any, userData: User) => {
+const updateUser = async (userId: string, userData: User) => {
   const result = await UserModel.findOneAndUpdate(
     { _id: userId },
     {
@@ -34,8 +34,17 @@ const updateUser = async (userId: any, userData: User) => {
 };
 
 const deleteUser = async (userId: string) => {
-  const users = await UserModel.findOneAndDelete({ userId });
+  const users = await UserModel.findOneAndDelete({ _id: userId });
   return users;
+};
+
+const createOrder = async (userId: string, orderData: Order) => {
+  const result = await UserModel.findOneAndUpdate(
+    { _id: userId },
+    { $push: { orders: orderData } },
+    { upsert: true, new: true },
+  );
+  return result;
 };
 
 export const UserServices = {
@@ -44,4 +53,5 @@ export const UserServices = {
   getUserById,
   updateUser,
   deleteUser,
+  createOrder,
 };
