@@ -1,5 +1,5 @@
-import { TOrder, TUser } from './user.interface';
 import { User } from './user.model';
+import { TOrder, TUser } from './user.interface';
 
 const createUser = async (data: TUser) => {
   const user = await User.create(data);
